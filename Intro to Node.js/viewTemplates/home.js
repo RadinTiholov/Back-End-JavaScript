@@ -9,7 +9,6 @@ module.exports = `<!DOCTYPE html>
     <link rel="stylesheet" href="../../content/styles/site.css">
     <link rel="shortcut icon" type="image/png" href="../../content/images/pawprint.ico" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src='../addNewCatService.js'></script>
     <title>Cat Shelter</title>
 </head>
 
@@ -23,9 +22,9 @@ module.exports = `<!DOCTYPE html>
             </ul>
         </nav>
         <h1>Cat Shelter</h1>
-        <form action="/search">
-            <input type="text">
-            <button type="button">Search</button>
+        <form action="/search" method = "GET">
+            <input type="text" name = "name">
+            <button type="submit">Search</button>
         </form>
     </header>
 
