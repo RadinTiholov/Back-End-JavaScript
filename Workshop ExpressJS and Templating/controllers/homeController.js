@@ -1,6 +1,8 @@
-const cubes = require('../src/db.json');
+const cubeServices = require('../services/cubeServices');
 
-exports.index = (req, res) => {
+exports.index = async (req, res) => {
+    const cubes = await cubeServices.getAllCubes();
+    console.log(cubes);
     res.render('index', {cubes});
 }
 
