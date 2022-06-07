@@ -1,4 +1,5 @@
-const { default: mongoose } = require("mongoose")
+const { default: mongoose } = require("mongoose");
+const Accessory = require("../models/Accessory");
 const Cube = require("../models/Cube")
 
 const addCube = async (cube) => {
@@ -12,7 +13,18 @@ const getAllCubes = async () => {
     return cubes;
 }
 const getOneCube = async (id) => {
-    const cube = await Cube.findById(id).lean();
+    const cube = await Cube.findById(id).populate('accessories').lean();
+    return cube;
+}
+const attachAccessory = async (accessoryId, cubeId) => {
+    const cube = await Cube.findById(cubeId);
+    const accessory = await Accessory.findById(accessoryId);
+
+    cube.accessories.push(accessory);
+    accessory.cubes.push(cube);
+
+    await cube.save();
+    await accessory.save();
 
     return cube;
 }
@@ -20,5 +32,6 @@ const getOneCube = async (id) => {
 module.exports = cubeServices = {
     addCube,
     getAllCubes,
-    getOneCube
+    getOneCube,
+    attachAccessory
 }

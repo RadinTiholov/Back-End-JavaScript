@@ -16,9 +16,13 @@ const getOneAccessory = async (id) => {
 
     return accessory;
 }
+const getAllAvailable = async (cubeId) =>{
+    return Accessory.find({_id : {$nin: cubeId}}).lean();
+}
 
 module.exports = accessoryService = {
     addAccessory,
     getAllAccessories,
-    getOneAccessory
+    getOneAccessory,
+    getAllAvailable
 }
