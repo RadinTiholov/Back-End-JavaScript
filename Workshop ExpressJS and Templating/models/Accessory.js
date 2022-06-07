@@ -21,3 +21,7 @@ const accessoryScheme = new mongoose.Schema({
         maxlength: 100
     },
 })
+
+const Accessory = mongoose.model("Accessory", accessoryScheme);
+
+module.exports = Accessory;
