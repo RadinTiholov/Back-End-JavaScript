@@ -1,4 +1,5 @@
 const authService = require('../services/authService.js');
+const constants = require('../src/constants.js');
 
 const router = require('express').Router();
 
@@ -12,6 +13,8 @@ router.post('/login', async (req, res) => {
         const token = await authService.login(userData);
         console.log(token);
         if(token){
+            res.cookie(constants.sessionName, token, {httpOnly: true});
+
             res.redirect('/');
         }
         else{
