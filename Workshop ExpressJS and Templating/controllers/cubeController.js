@@ -18,4 +18,22 @@ router.get('/details/:id', async (req, res) => {
     res.render('details', {cube});
 })
 
+router.get('/edit/:id', async (req, res) => {
+    const id = req.params.id;
+    const cube = await cubeServices.getOneCube(id);
+    cube["difficultyLevel" + cube.difficultyLevel] = true;
+    res.render('editCubePage', {cube});
+});
+
+router.post('/edit/:id', async (req, res) => {
+    const id = req.params.id;
+    const cube = req.body;
+    try {
+        const updatedCube = await cubeServices.updateCube(id, cube);
+        res.redirect(`/cube/details/${id}`);
+    } catch (error) {
+        res.redirect(`/404`);
+    }
+});
+
 module.exports = router;
