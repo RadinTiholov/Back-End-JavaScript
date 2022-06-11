@@ -11,7 +11,6 @@ router.post('/login', async (req, res) => {
     const userData = req.body;
     try {
         const token = await authService.login(userData);
-        console.log(token);
         if(token){
             res.cookie(constants.sessionName, token, {httpOnly: true});
 
@@ -39,6 +38,11 @@ router.post('/register', async (req, res) => {
         res.redirect('/404');
     }
 
+})
+router.get('/logout', (req, res) => {
+    res.clearCookie(constants.sessionName);
+
+    res.redirect('/');
 })
 
 module.exports = router;
