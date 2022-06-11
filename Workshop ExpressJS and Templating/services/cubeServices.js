@@ -32,6 +32,7 @@ const updateCube = async (cubeId, cube) => {
     return await Cube.findByIdAndUpdate(cubeId, cube);
 }
 const deleteCube = async (cubeId) => {
+    console.log(cubeId);
     return await Cube.findByIdAndDelete(cubeId);
 }
 
@@ -40,5 +41,6 @@ module.exports = cubeServices = {
     getAllCubes,
     getOneCube,
     attachAccessory,
-    updateCube
+    updateCube,
+    deleteCube
 }
