@@ -40,8 +40,15 @@ const login = async ({username, password}) => {
 
     return result;
 }
+const isAuthorized = (userId, userToken) => {
+    if(userToken && userId == userToken._id){
+        return true;
+    }
+    return false;
+}
 
 module.exports = {
     register,
-    login
+    login,
+    isAuthorized
 }

@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const cubeServices = require('../services/cubeServices');
+const authService = require('../services/authService');
 
 router.get('/create', (req, res) => {
     res.render('create');
@@ -7,6 +8,7 @@ router.get('/create', (req, res) => {
 
 router.post('/create', (req, res) => {
     const cube = req.body;
+    cube['ownerId'] = req.user._id;
     const savedCube = cubeServices.addCube(cube);
     res.redirect('/');
 })
@@ -14,7 +16,9 @@ router.post('/create', (req, res) => {
 router.get('/details/:id', async (req, res) => {
     const id = req.params.id;
     const cube = await cubeServices.getOneCube(id)
-
+    const userToken = req.user;
+    
+    const isAuthorized = authService.isAuthorized(cube.ownerId, userToken);
     res.render('details', {cube});
 })
 
