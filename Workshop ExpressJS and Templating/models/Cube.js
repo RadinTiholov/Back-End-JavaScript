@@ -33,8 +33,8 @@ const cubeSchema = new mongoose.Schema({
         }
     ],
     ownerId: {
-        type: String,
-        required: true
+        type: mongoose.Types.ObjectId,
+        ref: "User"
     }
 });
 

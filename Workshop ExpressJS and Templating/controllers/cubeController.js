@@ -19,7 +19,7 @@ router.get('/details/:id', async (req, res) => {
     const userToken = req.user;
     
     const isAuthorized = authService.isAuthorized(cube.ownerId, userToken);
-    res.render('details', {cube});
+    res.render('details', {cube, isAuthorized});
 })
 
 router.get('/edit/:id', async (req, res) => {
