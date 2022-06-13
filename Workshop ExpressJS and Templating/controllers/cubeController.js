@@ -3,7 +3,7 @@ const cubeServices = require('../services/cubeServices');
 const authService = require('../services/authService');
 
 router.get('/create', (req, res) => {
-    res.render('create');
+    res.render('cube/create');
 })
 
 router.post('/create', (req, res) => {
@@ -19,14 +19,14 @@ router.get('/details/:id', async (req, res) => {
     const userToken = req.user;
     
     const isAuthorized = authService.isAuthorized(cube.ownerId, userToken);
-    res.render('details', {cube, isAuthorized});
+    res.render('cube/details', {cube, isAuthorized});
 })
 
 router.get('/edit/:id', async (req, res) => {
     const id = req.params.id;
     const cube = await cubeServices.getOneCube(id);
     cube["difficultyLevel" + cube.difficultyLevel] = true;
-    res.render('editCubePage', {cube});
+    res.render('cube/edit', {cube});
 });
 
 router.post('/edit/:id', async (req, res) => {
@@ -44,7 +44,7 @@ router.get('/delete/:id', async (req, res) => {
     const id = req.params.id;
     const cube = await cubeServices.getOneCube(id);
     cube["difficultyLevel" + cube.difficultyLevel] = true;
-    res.render('deleteCubePage', {cube});
+    res.render('cube/delete', {cube});
 })
 
 router.post('/delete/:id', async (req, res) => {

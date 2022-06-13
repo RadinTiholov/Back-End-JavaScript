@@ -4,7 +4,7 @@ const constants = require('../src/constants.js');
 const router = require('express').Router();
 
 router.get('/login', (req, res) => {
-    res.render('loginPage');
+    res.render('auth/loginPage');
 })
 
 router.post('/login', async (req, res) => {
@@ -25,7 +25,7 @@ router.post('/login', async (req, res) => {
 })
 
 router.get('/register', (req, res) => {
-    res.render('registerPage');
+    res.render('auth/registerPage');
 })
 
 router.post('/register', async (req, res) => {
