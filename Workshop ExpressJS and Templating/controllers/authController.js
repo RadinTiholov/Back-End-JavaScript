@@ -32,10 +32,9 @@ router.post('/register', async (req, res) => {
     const userData = req.body;
     try {
         const createdUser = await authService.register(userData);
-
         res.redirect('/auth/login');
     } catch (error) {
-        res.redirect('/404');
+        res.status(401).render('auth/registerPage', {error});
     }
 
 })

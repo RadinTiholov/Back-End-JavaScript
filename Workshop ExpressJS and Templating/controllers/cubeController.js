@@ -9,8 +9,12 @@ router.get('/create', (req, res) => {
 router.post('/create', (req, res) => {
     const cube = req.body;
     cube['ownerId'] = req.user._id;
-    const savedCube = cubeServices.addCube(cube);
-    res.redirect('/');
+    try {
+        const savedCube = cubeServices.addCube(cube);
+        res.redirect('/');
+    } catch (error) {
+        res.status(400).render('cube/create', {error: error.message});
+    }
 })
 
 router.get('/details/:id', async (req, res) => {
@@ -36,7 +40,7 @@ router.post('/edit/:id', async (req, res) => {
         const updatedCube = await cubeServices.updateCube(id, cube);
         res.redirect(`/cube/details/${id}`);
     } catch (error) {
-        res.redirect(`/404`);
+        res.status(400).render('cube/edit', {error: error.message});
     }
 });
 

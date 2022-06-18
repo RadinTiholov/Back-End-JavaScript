@@ -7,18 +7,24 @@ const { isValidObjectId } = require("mongoose");
 
 
 const register = async ({username, password, repeatPassword}) => {
-    if(password != repeatPassword){
-        throw new Error();
+    if(password != repeatPassword || password == '' || repeatPassword == ''){
+        throw new Error("The two passwords are different.");
     }
 
     const hashedPassword = await bcrypt.hash(password, constants.saultRounds);
+    try {
+        let createdUser = User.create({
+            username,
+            password: hashedPassword
+        });
 
-    let createdUser = User.create({
-        username,
-        password: hashedPassword
-    })
+        return createdUser;
+    } catch (error) {
+        
+        console.log("Pishaman2");
+        throw error;
+    }
 
-    return createdUser;
 }
 
 const login = async ({username, password}) => {
