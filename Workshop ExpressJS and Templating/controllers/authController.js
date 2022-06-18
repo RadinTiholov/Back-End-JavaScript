@@ -20,7 +20,7 @@ router.post('/login', async (req, res) => {
             res.redirect('/404');
         }
     } catch (error) {
-        res.redirect('/404');
+        res.status(401).render('auth/loginPage', {error: error.message});
     }
 })
 

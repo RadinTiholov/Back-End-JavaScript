@@ -23,11 +23,15 @@ const register = async ({username, password, repeatPassword}) => {
 
 const login = async ({username, password}) => {
     const user = await User.findOne({username});
-
+    console.log(user);
     if (!user) {
-        throw new Error();
+        throw new Error('The username or the pasword is wrong');
     }
+
     const isValid = await bcrypt.compare(password, user.password);
+    if(!isValid){
+        throw new Error('The username or the pasword is wrong');
+    }
     const result = new Promise((resolve, reject) => {
         jwt.sign({_id: user._id, username: user.username}, constants.secret, {expiresIn: '2d'}, (err, token) => {
             if(err){
