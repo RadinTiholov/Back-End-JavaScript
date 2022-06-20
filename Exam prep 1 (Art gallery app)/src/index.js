@@ -6,6 +6,7 @@ const path = require('path');
 const dbInit = require('./config/initDb.js')
 const cookieParser = require('cookie-parser');
 const {auth} = require('./middlewares/authMiddleware');
+const { errorHandler } = require('./middlewares/errorHandlerMiddleware.js');
 
 const app = express();
 
@@ -15,6 +16,10 @@ app.use(express.static('src/public'));
 app.use(cookieParser());
 app.use(auth);
 app.use(routes);
+app.use(errorHandler)
+app.get('*', (req, res) => {
+    res.status(404).render('404');
+});
 
 //Init the hbs
 app.engine('hbs', hbs.engine({
