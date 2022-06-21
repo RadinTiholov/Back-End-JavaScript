@@ -3,6 +3,7 @@ const publicationService = require('../services/publicationService');
 
 router.get('/',  async (req, res) => {
     const publications = await publicationService.getAllLeaned();
+
     res.render('home/index', {publications});
 })
 

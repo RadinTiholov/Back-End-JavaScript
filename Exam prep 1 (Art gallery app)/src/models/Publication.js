@@ -30,7 +30,7 @@ const publicationSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: 'User'
     },
-    userShared: [{
+    usersShared: [{
         type: mongoose.Types.ObjectId,
         ref: 'User'
     }]
