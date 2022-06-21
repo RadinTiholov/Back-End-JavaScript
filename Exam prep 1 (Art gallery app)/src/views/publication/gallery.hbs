@@ -1,0 +1,34 @@
+
+
+        <main>
+
+            <section id="gallery">
+                <h1>Gallery</h1>
+                <article class="gallery-container">
+
+                    {{#each publications}}
+                    <!--If there are art publications in the database, show each of them-->
+                    <article class="card-info">
+                        <article class="card-info-image">
+                            <img src={{picture}} alt="art-image">
+                        </article>
+                        <article class="card-info-text">
+                            <h2>Title: {{title}}</h2>
+                            <h3>Certificate of authenticity: {{certificate}}</h3>
+                            <a href="/publication/details/{{_id}}" class="details-btn">Details</a>
+                        </article>
+                    </article>
+                    {{else}}
+                    <!--If there are still no art publications in the database display:-->
+                    <article class="no-available-publications">
+                        <h1>No publications created yet.</h1>
+                        <a href="/publication/create" class="create-pub">Create publication</a>
+                    </article>
+                    {{/each}}
+
+                </article>
+            </section>
+
+        </main>
+
+        
