@@ -58,6 +58,16 @@ router.get('/edit/:id', isAuth, isAuthor, async (req, res) => {
 })
 router.post('/edit/:id', isAuth, isAuthor, async(req, res) => {
     try{
+        if(req.body.certificate == '' || req.body.title == ''|| req.body.picture == '' || req.body.technique == ''){
+            throw new Error("All fields are required");
+        }
+        if(req.body.certificate != 'Yes' || req.body.certificate != 'No'){
+            throw new Error("The certificete has be only Yes ot No");
+        }
+        if(req.body.title.length < 6){
+            throw new Error("The title length has to be more than 6 characters");
+        }
+        //TODO Hand validation, because mongoose validation doesn't work....
         await publicationService.update(req.params.id, req.body);
 
         res.redirect(`/publication/details/${req.params.id}`);
