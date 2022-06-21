@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { USER_COOKIE_NAME, SECRET } = require('../config/env');
+const publicationService = require('../services/publicationService');
 
 exports.auth = (req, res, next) => {
     const token = req.cookies[USER_COOKIE_NAME];
@@ -32,6 +33,15 @@ exports.isAuth = (req, res, next) => {
 exports.isGuest = (req, res, next) => {
     if(req.user){
         return res.redirect('/gallery');
+    }
+
+    next();
+}
+exports.isAuthor = async (req, res, next) => {
+    const publication = await publicationService.getOneDetailed(req.params.id);
+    const isAuthor = req.user?._id == publication.author._id;
+    if(!isAuthor){
+        return res.render('404', {error: 'Unauthorized to do this action.'});
     }
 
     next();

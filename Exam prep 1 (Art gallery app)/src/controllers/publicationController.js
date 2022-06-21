@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { isAuth, isGuest } = require('../middlewares/authMiddleware.js');
+const { isAuth, isGuest, isAuthor } = require('../middlewares/authMiddleware.js');
 const publicationService = require('../services/publicationService.js');
 
 router.get('/gallery', async (req, res) =>{
@@ -29,49 +29,42 @@ router.get('/details/:id', async (req, res) => {
 router.get('/share/:id', isAuth, async (req, res) => {
     const publication = await publicationService.getOneDetailed(req.params.id);
     const publicationRaw = await publicationService.getOne(req.params.id);
+    const isShared = publicationRaw.usersShared.includes(req.user._id);
     const isAuthor = req.user?._id == publication.author._id;
     if(!isAuthor){
-        const isShared = publicationRaw.usersShared.includes(req.user._id);
         if(isShared){
             res.render('404', {error: 'Unauthorized to do this action.'})
         }else{ 
             publicationRaw.usersShared.push(req.user._id);
             publicationRaw.save();
-
+    
             res.redirect('/');
         }
     }
     else{
         res.render('404', {error: 'Unauthorized to do this action.'})
     }
+    
 })
-router.get('/delete/:id', isAuth, async (req, res) => {
-    const publication = await publicationService.getOneDetailed(req.params.id);
-    const isAuthor = req.user?._id == publication.author._id;
-    if(isAuthor){
-        const publicationRaw = await publicationService.getOne(req.params.id);
-        await publicationService.delete(req.params.id);
+router.get('/delete/:id', isAuth,isAuthor, async (req, res) => {
+    await publicationService.delete(req.params.id);
 
-        res.redirect('/publication/gallery');
-    }else{
-        res.render('404', {error: 'Unauthorized to do this action.'})
-    }
+    res.redirect('/publication/gallery');
 })
-router.get('/edit/:id', isAuth, async (req, res) => {
+router.get('/edit/:id', isAuth, isAuthor, async (req, res) => {
     const publication = await publicationService.getOneDetailed(req.params.id);
-    res.render('publication/edit', {publication});
+
+    res.render('publication/edit', {...publication});
 })
-router.post('/edit/:id', isAuth, async(req, res) => {
-    const publication = await publicationService.getOneDetailed(req.params.id);
-    const isAuthor = req.user?._id == publication.author._id;
-    if(isAuthor){
+router.post('/edit/:id', isAuth, isAuthor, async(req, res) => {
+    try{
         await publicationService.update(req.params.id, req.body);
 
         res.redirect(`/publication/details/${req.params.id}`);
-    }  
-    else{
-        res.render('404', {error: 'Unauthorized to do this action.'})
+    }catch(error){
+        res.render('404', {error: error.message})
     }
+    
 })
 
 module.exports = router;
