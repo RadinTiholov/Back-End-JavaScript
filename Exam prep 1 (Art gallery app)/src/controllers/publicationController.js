@@ -18,5 +18,22 @@ router.post('/create', isAuth, async (req, res) => {
         res.render('publication/create', {error: error.message, ...req.body})
     }
 })
+router.get('/details/:id', async (req, res) => {
+    const publication = await publicationService.getOneDetailed(req.params.id);
+    const isAuthor = req.user?._id == publication.author._id;
+    const isShared = false;
+
+    res.render('publication/details', {...publication, isAuthor, isShared});
+})
+router.get('/share/:id', isAuth, async (req, res) => {
+    const publication = await publicationService.getOneDetailed(req.params.id);
+    const isAuthor = req.user?._id == publication.author._id;
+    if(!isAuthor){
+        console.log("Shared");
+    }
+    else{
+        res.render('404', {error: 'Unauthorized to do this action.'})
+    }
+})
 
 module.exports = router;
