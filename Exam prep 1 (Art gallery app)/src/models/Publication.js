@@ -15,7 +15,7 @@ const publicationSchema = new mongoose.Schema({
         type: String,
         validate: {
             validator: function(){
-                return this.imageUrl.startsWith('http://') || this.imageUrl.startsWith('https://');
+                return this.picture.startsWith('http://') || this.picture.startsWith('https://');
             },
             message: "The link should starts wiht http"
         },
