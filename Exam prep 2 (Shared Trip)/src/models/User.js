@@ -7,11 +7,19 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: [true, 'The user already exists.']
+        unique: [true, 'The user already exists.'],
+        validate: {
+            validator: function() {
+                var re = /\w+@.+/;
+                return re.test(this.email);
+            },
+            message: 'Provided email is invalid.'
+        }
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        minLength: 4
     },
     gender: {
         type: String,
