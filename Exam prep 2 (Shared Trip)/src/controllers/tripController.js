@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { isAuth, isGuest } = require('../middlewares/authMiddleware.js');
+const { isAuth, isGuest, isAuthor } = require('../middlewares/authMiddleware.js');
 
 const tripService = require('../services/tripService.js');
 
@@ -46,6 +46,10 @@ router.get('/join/:id', isAuth, async (req, res) => {
         tripRaw.buddies.push(req.user._id );
         tripRaw.save();
 
+        const author = await tripService.getAuthor(trip.author);
+        author.tripsHistory.push(trip._id);
+        author.save();
+
         res.redirect(`/trip/details/${req.params.id}`);
     }
     else{
@@ -54,7 +58,6 @@ router.get('/join/:id', isAuth, async (req, res) => {
 });
 router.get('/delete/:id', isAuth, async (req, res) => {
     const trip = await tripService.getOneDetailed(req.params.id).lean();
-    const tripRaw = await tripService.getOne(req.params.id);
     const isAuthor = req.user._id == trip.author._id;
     if(isAuthor){
         await tripService.delete(req.params.id);
@@ -64,6 +67,17 @@ router.get('/delete/:id', isAuth, async (req, res) => {
     else{
         res.status(401).render('404', {error: "Not authorized to do this action."})
     }
+});
+router.get('/edit/:id', isAuth, isAuthor,  async (req, res) => {
+    const trip = await tripService.getOneDetailed(req.params.id).lean();
+    res.render(`trip/edit`, {...trip});
+})
+
+router.post('/edit/:id', isAuth, isAuthor, async (req, res) => {
+    const trip = await tripService.getOneDetailed(req.params.id).lean();
+
+    await tripService.update(req.params.id, req.body);
+    res.redirect(`/trip/details/${req.params.id}`);
 });
 
 
