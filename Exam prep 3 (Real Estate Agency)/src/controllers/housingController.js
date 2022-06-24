@@ -1,4 +1,4 @@
-const { isAuth } = require('../middlewares/authMiddleware');
+const { isAuth, isAuthor } = require('../middlewares/authMiddleware');
 const housingService = require('../services/housingService.js');
 
 const router = require('express').Router();
@@ -63,17 +63,18 @@ router.get('/rent/:id', isAuth, async (req, res) => {
     }
 })
 
-router.get('/delete/:id', isAuth, async (req, res) => {
-    const housing  = await housingService.getOneDetailed(req.params.id).lean();
-    const isAuthor = req.user._id == housing.owner._id;
-    if(isAuthor){
-        await housingService.delete(req.params.id);
+router.get('/delete/:id', isAuth, isAuthor, async (req, res) => {
+    await housingService.delete(req.params.id);
+    res.redirect('/housing/all');
+})
 
-        res.redirect('/housing/all');
-    }
-    else{
-        res.status(401).render('404', {error: "Unauthorized to do this action."})
-    }
+router.get('/edit/:id', isAuth, isAuthor, async (req, res) => {
+    const housing  = await housingService.getOneDetailed(req.params.id).lean();
+    res.render('housing/edit', housing)
+})
+router.post('/edit/:id', isAuth, isAuthor, async (req, res) => {
+    await housingService.update(req.params.id, req.body);
+    res.redirect(`/housing/details/${req.params.id}`);
 })
 
 module.exports = router;
