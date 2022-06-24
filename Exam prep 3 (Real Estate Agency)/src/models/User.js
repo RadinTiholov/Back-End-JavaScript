@@ -1,21 +1,29 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const { SAULT_ROUNDS } = require('../config/env');
-const { nextTick } = require('process');
 
 const userSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        validate: {
+            validator: function() {
+                var re = /[\w]+ [\w]+/;
+                return re.test(this.name);
+            },
+            message: 'Provided name is invalid.'
+        }
+    },
     username: {
         type: String,
         required: true,
-        unique: [true, 'The user already exists.']
+        unique: [true, 'The user already exists.'],
+        minLength: 5
     },
     password: {
         type: String,
-        required: true
-    },
-    addres: {
-        type: String,
-        required: true
+        required: true,
+        minLength: 4
     }
 });
 

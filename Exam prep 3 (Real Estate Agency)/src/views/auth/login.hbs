@@ -1,31 +1,34 @@
-<main>
 
-            <section id="login-container">
+        <main>
+            <section id="login-page">
+                <div class="boxs">
+                    <div class="card-image">
+                        <h2 class="card-heading">
+                            Login
+                        </h2>
+                    </div>
+                    <form class="card-form" action="/auth/login" method="POST">
 
-                <div class="container">
-                    <!-- Do not forget to change the path to the image -->
-                    <img src="/img/slider.jpg" alt="image">
-
-                    <form action="/auth/login" method="POST" class="container-text">
-                        <h2>Login</h2>
-                        <p>Welcome, see the new masterpieces!</p>
-
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" placeholder="ivan_00" name="username">
-
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" placeholder="*****" name="password">
-
-                        <button class="login-btn">Login</button>
-                        <div class="card-no-account">
-                            <p>Don't have an account? <a href="/auth/register">Sign up</a>.</p>
+                        <div class="input">
+                            <input type="text" class="input-field" placeholder="alexander" id="username" name="username" value="" />
+                            <label class="username">Username</label>
                         </div>
-
+                        <div class="input">
+                            <input type="password" class="input-field" id="password" name="password" placeholder="******" />
+                            <label class="password">Password</label>
+                        </div>
+                        <div class="action">
+                            <button class="action-button">Login</button>
+                        </div>
                     </form>
+                    <div class="card-info">
+                        <p>Dont have an account?
+                            <a href="/auth/register">Sign up</a>.
+                        </p>
+                    </div>
                 </div>
-
             </section>
 
         </main>
 
-        
+       

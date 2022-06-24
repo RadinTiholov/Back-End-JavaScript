@@ -1,34 +1,43 @@
 
+        <main>
 
-            <section id="register-container">
-                <div class="register-container-info">
-                    <!-- Do not forget to change the path to the image -->
-                    <img src="/img/slider.jpg" alt="image">
-
-                    <form action="/auth/register" method="POST" class="container-text">
-                        <h2>Register</h2>
-                        <p>Register to get ideas and view the latest masterpieces.</p>
-
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" placeholder="ivan_00" name="username" value={{username}}>
-
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" placeholder="*****" name="password" value={{password}}>
-
-                        <label for="re-password">Repeat password:</label>
-                        <input type="password" id="re-password" placeholder="*****" name="repeatPassword" value={{repeatPassword}}>
-
-                        <label for="address">Address:</label>
-                        <input type="text" id="address" placeholder="2572 Orphan Road" name="addres" value={{address}}>
-
-                        <button class="register-btn">Register</button>
-                        <div class="card-no-account">
-                            <p>Already have an account?<a href="/auth/login"> Sign in</p>
+            <section id="register-page">
+                <div class="boxs">
+                    <div class="card-image">
+                        <h2 class="card-heading">
+                            Create your account
+                        </h2>
+                    </div>
+                    <form class="card-form" action="/auth/register" method="POST">
+                        <div class="input">
+                            <input type="text" class="input-field" placeholder="Alexander Parkinson" id="name" name="name" value="" />
+                            <label class="name">Full Name</label>
                         </div>
-
+                        <div class="input">
+                            <input type="text" class="input-field" placeholder="alexander" id="username" name="username" value="" />
+                            <label class="username">Username</label>
+                        </div>
+                        <div class="input">
+                            <input type="password" class="input-field" id="password" name="password" placeholder="******" />
+                            <label class="password">Password</label>
+                        </div>
+                        <div class="input">
+                            <input type="password" class="input-field" id="re-password" name="rePassword" placeholder="******" />
+                            <label class="re-password">Repeat Password</label>
+                        </div>
+                        <div class="action">
+                            <button class="action-button">Get started</button>
+                        </div>
                     </form>
-                </div>
 
+                    <div class="card-info">
+                        <small>Already have an account?<a href="/auth/login"> Sign in</a>
+                        </small>
+                    </div>
+                </div>
             </section>
 
-        
+        </main>
+
+
+       

@@ -31,7 +31,7 @@ exports.isAuth = (req, res, next) => {
 
 exports.isGuest = (req, res, next) => {
     if(req.user){
-        return res.redirect('/gallery');
+        return res.render('404', {error: "Unauthorized to do this action."});
     }
 
     next();
