@@ -27,7 +27,7 @@ const housingSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: function() {
-                return this.carImage.startsWith('http://') || this.carImage.startsWith('https://')
+                return this.homeImage.startsWith('http://') || this.homeImage.startsWith('https://')
             },
             message: 'The url should starts with http:// or https://'
         }
