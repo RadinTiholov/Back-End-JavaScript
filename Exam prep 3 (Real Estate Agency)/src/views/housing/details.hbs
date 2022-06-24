@@ -9,33 +9,43 @@
                     <div class="product-info">
                         <div class="product-text">
                             <div class="product-text">
-                                <h1>Name: Sunhouse C21</h1>
-                                <h2>Type: Apartment</h2>
-                                <h4>Year: 2021</h4>
-                                <h4>City: Sofia</h4>
-                                <p>Description: Spacious dining room, remodel kitchen and wonderful deeded walk-out deck.</p>
-
+                                <h1>Name: {{name}}</h1>
+                                <h2>Type: {{type}}</h2>
+                                <h4>Year: {{year}}</h4>
+                                <h4>City: {{city}}</h4>
+                                <p>Description: {{description}}</p>
+                                {{#if rentedAHouseJoined}}
                                 <!-- if there are already tenants of the housing, separate their names with a comma and a space ", "  -->
-                                <p>People rented this housing: Alex Petkov, Ivan Dobrev</p>
-
+                                <p>People rented this housing: {{rentedAHouseJoined}}</p>
+                                {{else}}
                                 <!-- If not display: -->
                                 <p>People rented this housing: There are no tenants yet.</p>
+                                {{/if}}
                             </div>
                         </div>
 
                         <!-- if there is no registered user, do not display buttons-->
+                        {{#if user}}
                         <div class="product-btn">
+                            {{#if isAuthor}}
                             <!-- Only for registered user and creator of the housing offer-->
-                            <a href="#" class="edit">Edit</a>
-                            <a href="#" class="remove">Delete</a>
-                            
-                            <!-- logged in user with available pieces-->
-                            <a href="#" class="rentHome">Rent a home, available 2 housing</a>
-                            <p class="alRentHome">You have already rent this home</p>
-
-                            <!-- logged in user with no available pieces-->
-                            <p class="no-housing">No Housing Available!</p>
+                            <a href="/housing/edit/{{_id}}" class="edit">Edit</a>
+                            <a href="/housing/delete/{{_id}}" class="remove">Delete</a>
+                            {{else}}
+                                {{#if isAvailable}}
+                                    {{#if isJoined}}
+                                    <p class="alRentHome">You have already rent this home</p>
+                                    {{else}}
+                                    <!-- logged in user with available pieces-->
+                                    <a href="/housing/rent/{{_id}}" class="rentHome">Rent a home, available {{availablePlaces}} housing</a>
+                                    {{/if}}
+                                {{else}}
+                                <!-- logged in user with no available pieces-->
+                                <p class="no-housing">No Housing Available!</p>
+                                {{/if}}
+                            {{/if}}
                         </div>
+                        {{/if}}
                     </div>
                 </div>
             </section>
