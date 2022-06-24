@@ -40,7 +40,7 @@ exports.isGuest = (req, res, next) => {
 
 exports.isAuthor = async (req, res, next) => {
     const housing  = await housingService.getOneDetailed(req.params.id).lean();
-    const isAuthor = req.user?._id == housing.owner._id;
+    const isAuthor = req.user?._id == housing?.owner._id;
     if(!isAuthor){
         res.status(401).render('404', {error: "Not authorized to do this action."})
     }

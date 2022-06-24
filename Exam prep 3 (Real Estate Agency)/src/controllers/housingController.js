@@ -14,8 +14,12 @@ router.get('/search', isAuth, (req, res) => {
 
 router.post('/search', isAuth, async (req, res) => {
     const search = req.body.search;
-    const housings = await (await housingService.getAll().lean()).filter(x => x.type == search);
-    res.render('housing/search' , {housings, firstEnter: false});
+    try{
+        const housings = await (await housingService.getAll().lean()).filter(x => x.type == search);
+        res.render('housing/search' , {housings, firstEnter: false});
+    }catch(error){
+        res.render(404, {error: error.message})
+    }
 })
 
 router.get('/create', isAuth, (req, res) => {
@@ -64,8 +68,12 @@ router.get('/rent/:id', isAuth, async (req, res) => {
 })
 
 router.get('/delete/:id', isAuth, isAuthor, async (req, res) => {
-    await housingService.delete(req.params.id);
-    res.redirect('/housing/all');
+    try{
+        await housingService.delete(req.params.id);
+        res.redirect('/housing/all');
+    }catch(error){
+        res.render(404, {error: error.message})
+    }
 })
 
 router.get('/edit/:id', isAuth, isAuthor, async (req, res) => {
@@ -73,8 +81,12 @@ router.get('/edit/:id', isAuth, isAuthor, async (req, res) => {
     res.render('housing/edit', housing)
 })
 router.post('/edit/:id', isAuth, isAuthor, async (req, res) => {
-    await housingService.update(req.params.id, req.body);
-    res.redirect(`/housing/details/${req.params.id}`);
+    try{
+        await housingService.update(req.params.id, req.body);
+        res.redirect(`/housing/details/${req.params.id}`);
+    }catch(error){
+        res.render(404, {error: error.message})
+    }
 })
 
 module.exports = router;
