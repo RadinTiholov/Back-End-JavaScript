@@ -14,14 +14,6 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.pre('save', function(next){
-    bcrypt.hash(this.password, SAULT_ROUNDS)
-        .then(hashedPasword => {
-            this.password = hashedPasword;
-            next();
-        });
-})
-
 
 const User = mongoose.model("User", userSchema);
 
