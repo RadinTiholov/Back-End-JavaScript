@@ -9,12 +9,22 @@ import { Contact } from './components/Contact';
 import { Skills } from './components/Skills';
 
 function App() {
+  const user = {
+    name : "Radin Tiholov",
+    birthday : "00-00-0000",
+    degree: "xxxxxxxxxx",
+    experience: "none",
+    phone: "00000000000",
+    email: "example@gmil.com",
+    address: "aaaaaaaaaaaaaaaaaaaaaa",
+    freelance: "dev"
+  }
   return (
     <div>
-      <Navbar/>
+        <Navbar/>
         <VideoModal/>
         <Header/>
-        <About/>
+        <About user = {user}/>
         <Qualification/>
         <Skills/>
         <Contact/>
