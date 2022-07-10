@@ -1,20 +1,26 @@
 import { User } from "./User"
 import { UserDetails } from "./UserDetails"
 import { UserDelete } from "./UserDelete"
+import { UserEdit } from "./UserEdit"
+import { UserCreate } from "./UserCreate"
 import * as userService from '../services/userService'
-import { useState } from "react";
-
-const baseUrl = 'http://localhost:3005/api';
+import {useState, useEffect} from 'react';
 
 export const UserSection = (props) => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [userAction, setUserAction] = useState(null);
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+      userService.getAll()
+        .then(users => setUsers(users));
+    }, []);
 
     const closeTab = () => {
       setUserAction(null);
     }
     const detailsClickHandler = (userId) => {
-        userService.getOne(userId, baseUrl)
+        userService.getOne(userId)
           .then(user => {
             setSelectedUser(user);
             setUserAction('details')
@@ -24,20 +30,100 @@ export const UserSection = (props) => {
       setUserAction('delete')
       setSelectedUser(userId);
     }
+    const editClickHandler = (userId) => {
+      userService.getOne(userId)
+          .then(user => {
+            setSelectedUser(user);
+            setUserAction('edit');
+          });
+    }
+    const createClickHandler = () => {
+      setUserAction('create')
+    }
     const deleteSave = () => {
-      userService.deleteById(selectedUser, baseUrl)
+      userService.deleteById(selectedUser)
         .then(res => {
           setUserAction(null)
+          setUsers(users.filter(user => user._id !== selectedUser))
         });
     }
+    const onEditSave = async (userId, e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+
+      const firstName = formData.get('firstName');
+      const lastName = formData.get('lastName');
+      const email = formData.get('email');
+      const imageUrl = formData.get('imageUrl');
+      const phoneNumber = formData.get('phoneNumber');
+      const country = formData.get('country');
+      const city = formData.get('city');
+      const street = formData.get('street');
+      const streetNumber = formData.get('streetNumber');
+
+      const data = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        imageUrl: imageUrl,
+        phoneNumber: phoneNumber,
+        address: {
+          country: country,
+          city: city,
+          street: street,
+          streetNumber: streetNumber,
+        }
+      }
+      const result = await userService.editById(userId, data);
+      const updatedUsers = users.map(user => {
+        if(user._id === userId){
+          return result.user
+        } 
+        return user
+      })
+      setUsers(updatedUsers);
+      setUserAction(null);
+  }
+  const onCreateSave = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    const firstName = formData.get('firstName');
+    const lastName = formData.get('lastName');
+    const email = formData.get('email');
+    const imageUrl = formData.get('imageUrl');
+    const phoneNumber = formData.get('phoneNumber');
+    const country = formData.get('country');
+    const city = formData.get('city');
+    const street = formData.get('street');
+    const streetNumber = formData.get('streetNumber');
+
+    const data = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      imageUrl: imageUrl,
+      phoneNumber: phoneNumber,
+      address: {
+        country: country,
+        city: city,
+        street: street,
+        streetNumber: streetNumber,
+      }
+    }
+    const result = await userService.create(data);
+    setUsers([...users, result.user]);
+    setUserAction(null);
+}
 
     return (
         <>
         <div className="table-wrapper">
 
             {userAction === "details" ? <UserDetails {...selectedUser} closeTab = {closeTab} /> : null}
-            {userAction === "edit" ? <UserDetails {...selectedUser} closeTab = {closeTab}/> : null}
+            {userAction === "edit" ? <UserEdit {...selectedUser} closeTab = {closeTab} onEditSave = {onEditSave}/> : null}
             {userAction === "delete" ? <UserDelete userId = {selectedUser} closeTab = {closeTab} deleteSave = {deleteSave}/> : null}
+            {userAction === "create" ? <UserCreate closeTab = {closeTab} onCreateSave ={onCreateSave}/> : null}
               <table className="table">
                 <thead>
                   <tr>
@@ -79,11 +165,11 @@ export const UserSection = (props) => {
                   </tr>
                 </thead>
                 <tbody>
-                    {props.users.map(x => <User key ={x._id} {...x} detailsClickHandler = {detailsClickHandler} deleteClickHandler = {deleteClickHandler}/>)}
+                    {users.map(x => <User key ={x._id} {...x} detailsClickHandler = {detailsClickHandler} deleteClickHandler = {deleteClickHandler} editClickHandler= {editClickHandler}/>)}
                 </tbody>
               </table>
             </div>
-            <button className="btn-add btn">Add new user</button>
+            <button className="btn-add btn" onClick={createClickHandler}>Add new user</button>
             {/* Pagination component  */}
             <div className="pagination position">
               <div className="limits">

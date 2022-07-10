@@ -1,7 +1,7 @@
 export const UserDelete = (props) => {
     return (
         <div className="overlay">
-      <div className="backdrop"></div>
+      <div className="backdrop" onClick={props.closeTab}></div>
       <div className="modal">
         <div className="confirm-container">
           <header className="headers">
