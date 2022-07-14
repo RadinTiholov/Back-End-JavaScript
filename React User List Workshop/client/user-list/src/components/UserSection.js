@@ -84,34 +84,8 @@ export const UserSection = (props) => {
       setUsers(updatedUsers);
       setUserAction(null);
   }
-  const onCreateSave = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-
-    const firstName = formData.get('firstName');
-    const lastName = formData.get('lastName');
-    const email = formData.get('email');
-    const imageUrl = formData.get('imageUrl');
-    const phoneNumber = formData.get('phoneNumber');
-    const country = formData.get('country');
-    const city = formData.get('city');
-    const street = formData.get('street');
-    const streetNumber = formData.get('streetNumber');
-
-    const data = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      imageUrl: imageUrl,
-      phoneNumber: phoneNumber,
-      address: {
-        country: country,
-        city: city,
-        street: street,
-        streetNumber: streetNumber,
-      }
-    }
-    const result = await userService.create(data);
+    const onCreateSave = async (userData) => {
+    const result = await userService.create(userData);
     setUsers([...users, result.user]);
     setUserAction(null);
 }
@@ -123,7 +97,7 @@ export const UserSection = (props) => {
             {userAction === "details" ? <UserDetails {...selectedUser} closeTab = {closeTab} /> : null}
             {userAction === "edit" ? <UserEdit {...selectedUser} closeTab = {closeTab} onEditSave = {onEditSave}/> : null}
             {userAction === "delete" ? <UserDelete userId = {selectedUser} closeTab = {closeTab} deleteSave = {deleteSave}/> : null}
-            {userAction === "create" ? <UserCreate closeTab = {closeTab} onCreateSave ={onCreateSave}/> : null}
+            {userAction === "create" ? <UserCreate closeTab = {closeTab} onCreateSave = {onCreateSave}/>: null}
               <table className="table">
                 <thead>
                   <tr>
