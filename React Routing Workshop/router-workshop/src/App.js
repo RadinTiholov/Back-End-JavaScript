@@ -13,6 +13,7 @@ import { Create } from './components/Create/Create';
 import { Edit } from './components/Edit/Edit';
 import { Details } from './components/Details/Details';
 import { Catalogue } from './components/Catalogue/Catalogue';
+import { NotFound } from './components/NotFound/NotFound';
 
 function App() {
   return (
@@ -21,25 +22,14 @@ function App() {
       {/* Main Content */}
       <main id="main-content"></main>
       <Routes>
-        <Route path='/' element={<Home />} />
-      </Routes>
-      <Routes>
+        <Route index element={<Home />} />
         <Route path='/login' element={<Login />} />
-      </Routes>
-      <Routes>
         <Route path='/register' element={<Register />} />
-      </Routes>
-      <Routes>
         <Route path='/create' element={<Create />} />
-      </Routes>
-      <Routes>
-        <Route path='/edit' element={<Edit />} />
-      </Routes>
-      <Routes>
-        <Route path='/details' element={<Details />} />
-      </Routes>
-      <Routes>
+        <Route path='/edit/:id' element={<Edit />} />
+        <Route path='/details/:id' element={<Details />} />
         <Route path='/catalogue' element={<Catalogue />} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </div>
 

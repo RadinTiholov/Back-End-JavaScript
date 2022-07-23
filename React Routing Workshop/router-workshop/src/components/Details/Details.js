@@ -1,20 +1,27 @@
+import { useEffect, useState } from "react"
+import { useParams, Link } from "react-router-dom"
+import * as gamesService from '../../services/gamesService'
+
 export const Details = () => {
+    const params = useParams()
+    const [game, setGame] = useState({});
+
+    useEffect(() => {
+        gamesService.getDetails(params.id)
+            .then(res => setGame(res))
+    }, [])
+
     return(
         <section id="game-details">
         <h1>Game Details</h1>
         <div className="info-section">
           <div className="game-header">
-            <img className="game-img" src="images/MineCraft.png" alt='img'/>
-            <h1>Bright</h1>
-            <span className="levels">MaxLevel: 4</span>
-            <p className="type">Action, Crime, Fantasy</p>
+            <img className="game-img" src={game.imageUrl} alt='img'/>
+            <h1>{game.title}</h1>
+            <span className="levels">MaxLevel: {game.maxLevel}</span>
+            <p className="type">{game.category}</p>
           </div>
-          <p className="text">
-            Set in a world where fantasy creatures live side by side with humans. A
-            human cop is forced to work with an Orc to find a weapon everyone is
-            prepared to kill for. Set in a world where fantasy creatures live side
-            by side with humans. A human cop is forced to work with an Orc to find a
-            weapon everyone is prepared to kill for.
+          <p className="text">{game.summary}
           </p>
           {/* Bonus ( for Guests and Users ) */}
           <div className="details-comments">
@@ -33,12 +40,12 @@ export const Details = () => {
           </div>
           {/* Edit/Delete buttons ( Only for creator of this game )  */}
           <div className="buttons">
-            <a href="#" className="button">
+            <Link to={"/edit/" + params.id} className="button">
               Edit
-            </a>
-            <a href="#" className="button">
+            </Link>
+            <Link to='#' className="button">
               Delete
-            </a>
+            </Link>
           </div>
         </div>
         {/* Bonus */}
