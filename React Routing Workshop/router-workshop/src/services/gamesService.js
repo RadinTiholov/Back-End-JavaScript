@@ -10,8 +10,13 @@ const getDetails = (id) => {
         .then(res => res.json())
         .catch(err => alert(err))
 }
-
+const getAll = () => {
+    return fetch(`${baseUrl}/data/games`)
+        .then(res => res.json())
+        .catch(err => alert(err))
+}
 export {
     getLatest,
-    getDetails
+    getDetails,
+    getAll
 }
