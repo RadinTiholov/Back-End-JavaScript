@@ -1,0 +1,8 @@
+.backgound-layer{
+    background-image: url('../public/stacked-waves-haikei.svg');
+    aspect-ratio: 16/9;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
