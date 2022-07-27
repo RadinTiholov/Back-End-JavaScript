@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { TaskContext } from "../../contexts/TaskContext";
+import { useContext, useState } from "react";
 import { EditModal } from "./EditModal/EditModal";
 import { Item } from "./Item/Item"
 
@@ -6,7 +7,7 @@ export const Todo = (props) => {
     const [textInputAdd, setTextInputAdd] = useState('');
     const [textInputEdit, setTextInputEdit] = useState({});
     const [isEditing, setIsEditing] = useState(false);
-
+    const tasks = useContext(TaskContext);
     const onCreateClick = (e) => {
         e.preventDefault();
 
@@ -68,7 +69,7 @@ export const Todo = (props) => {
                             {/* Tasks */}
                             <h2 className="card-title text-center mb-5 fw-bold">Tasks</h2>
                             {/* Task */}
-                            {props.tasks.map(x => <Item key={x._id} {...x} onDeleteClick={onDeleteClick} onEditOpen = {onEditOpen}/>)}
+                            {tasks.map(x => <Item key={x._id} {...x} onDeleteClick={onDeleteClick} onEditOpen = {onEditOpen}/>)}
                             
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 import './App.css';
 import { Todo } from './components/Todo/Todo';
 import useFetch from './hooks/useFetch';
+import {TaskContext} from './contexts/TaskContext';
 
 function App() {
     const [tasks, setTasks] = useFetch('http://localhost:3030/jsonstore/tasks');
@@ -9,7 +10,7 @@ function App() {
         fetch('http://localhost:3030/jsonstore/tasks', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({"text" : text})
+            body: JSON.stringify({ "text": text })
         })
             .then(res => res.json())
             .then(res => setTasks(state => [...state, res]))
@@ -26,17 +27,19 @@ function App() {
         fetch('http://localhost:3030/jsonstore/tasks/' + id, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({"text": text, '_id': id})
-    })
+            body: JSON.stringify({ "text": text, '_id': id })
+        })
             .then(res => res.json())
             .then(res => {
-                const tempTasks = [...tasks].map(x => x._id === res._id ? {...x, "text": res.text} :x);
+                const tempTasks = [...tasks].map(x => x._id === res._id ? { ...x, "text": res.text } : x);
                 setTasks(tempTasks)
             })
     }
     return (
         <div className="backgound-layer">
-            <Todo tasks={tasks} createTask = {createTask} deleteTask = {deleteTask} updateTask = {updateTask}/>
+            <TaskContext.Provider value={tasks}>
+                <Todo createTask={createTask} deleteTask={deleteTask} updateTask={updateTask} />
+            </TaskContext.Provider>
         </div>
 
     );
