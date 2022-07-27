@@ -1,15 +1,9 @@
 import './App.css';
 import { Todo } from './components/Todo/Todo';
-import { useEffect, useState } from 'react';
+import useFetch from './hooks/useFetch';
 
 function App() {
-    const [tasks, setTasks] = useState([]);
-
-    useEffect(() => {
-        fetch('http://localhost:3030/jsonstore/tasks')
-            .then(res => res.json())
-            .then(res => setTasks(Object.values(res)))
-    }, [])
+    const [tasks, setTasks] = useFetch('http://localhost:3030/jsonstore/tasks');
 
     const createTask = (text) => {
         fetch('http://localhost:3030/jsonstore/tasks', {
