@@ -1,10 +1,10 @@
 import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { AuthContext } from "../../contexts/AuthContext"
-import * as reqest from "../../services/requester" 
+import * as request from "../../services/requester" 
 
 export const Login = () => {
-    const [auth, setAuth] = useContext(AuthContext)
+    const [auth, userLogin, userLogout] = useContext(AuthContext)
     const navigate = useNavigate();
     const [inputData, setInputData] = useState({
         email : "",
@@ -18,12 +18,15 @@ export const Login = () => {
     }
     const onSubmit = (e) => {
         e.preventDefault();
-        reqest.post('http://localhost:3030/users/login', inputData)
+        request.post('http://localhost:3030/users/login', inputData)
             .then(res => {
-                setAuth(res);
+                userLogin(res);
                 navigate('/')
             })
-            .catch(() => {navigate('/404')})
+            .catch(res => {
+                console.log(res)
+                navigate('/404')
+            })
     }
 
     return (

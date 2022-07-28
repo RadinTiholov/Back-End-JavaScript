@@ -17,6 +17,7 @@ import { Details } from './components/Details/Details';
 import { Catalogue } from './components/Catalogue/Catalogue';
 import { NotFound } from './components/NotFound/NotFound';
 import * as gamesService from "./services/gamesService";
+import { Logout } from './components/Logout/Logout';
 
 function App() {
     
@@ -28,8 +29,16 @@ function App() {
             .then(res => setGames(res));
     }, [])
 
+    const userLogin = (authData) => {
+        setAuth(authData);
+    };
+
+    const userLogout = () => {
+        setAuth(null);
+    };
+
     return (
-        <AuthContext.Provider value={[auth, setAuth]}>
+        <AuthContext.Provider value={[auth, userLogin, userLogout]}>
             <div id="box">
                 <Header />
                 {/* Main Content */}
@@ -37,6 +46,7 @@ function App() {
                 <Routes>
                     <Route index element={<Home />} />
                     <Route path='/login' element={<Login />} />
+                    <Route path='/logout' element={<Logout />} />
                     <Route path='/register' element={<Register />} />
                     <Route path='/create' element={<Create />} />
                     <Route path='/edit/:id' element={<Edit />} />

@@ -1,21 +1,36 @@
 const request = async (method, url, data) => {
     try{
+        const user = localStorage.getItem('auth');
+        let auth = JSON.parse('{}');
+        if(user !== 'undefined' && user){
+            auth = JSON.parse(user);
+        }
+
+        let headers = {}
+
+        if (auth.accessToken) {
+            headers['X-Authorization'] = auth.accessToken;
+        }
+
         let beginningRequest;
         if(method === 'GET'){
-            beginningRequest = fetch(url)
+            beginningRequest = fetch(url,{ headers })
         }
         else{
             beginningRequest = fetch(url, {
                 method,
                 headers: {
+                    ...headers,
                     'content-type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
         }
         const response = await beginningRequest;
-        const result = await response.json();
-    
+        let result = null;
+        if(response.status === 200){ 
+            result = await response.json();
+        }
         return result;
     }catch(err){
         console.log(err);
