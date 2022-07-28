@@ -1,19 +1,19 @@
 const request = async (method, url, data) => {
     try{
         let beginningRequest;
-        if(method !== 'GET'){
+        if(method === 'GET'){
             beginningRequest = fetch(url)
         }
         else{
             beginningRequest = fetch(url, {
                 method,
                 headers: {
-                    "content-type": "application/json"
+                    'content-type': 'application/json'
                 },
                 body: JSON.stringify(data)
-            })
+            });
         }
-        const response = await beginningRequest();
+        const response = await beginningRequest;
         const result = await response.json();
     
         return result;
