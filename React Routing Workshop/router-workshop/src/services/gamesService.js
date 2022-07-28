@@ -1,18 +1,16 @@
+import * as request from "./requester" 
 const baseUrl = 'http://localhost:3030'
 
 const getLatest = () => {
-    return fetch(`${baseUrl}/data/games?sortBy=_createdOn%20desc&distinct=category`)
-        .then(res => res.json())
+    return request.get(`${baseUrl}/data/games?sortBy=_createdOn%20desc&distinct=category`)
         .catch(err => alert(err))
 }
 const getDetails = (id) => {
-    return fetch(`${baseUrl}/data/games/${id}`)
-        .then(res => res.json())
+    return request.get(`${baseUrl}/data/games/${id}`)
         .catch(err => alert(err))
 }
 const getAll = () => {
-    return fetch(`${baseUrl}/data/games`)
-        .then(res => res.json())
+    return request.get(`${baseUrl}/data/games`)
         .catch(err => alert(err))
 }
 export {
