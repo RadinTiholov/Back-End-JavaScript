@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import { AuthContext } from './contexts/AuthContext';
 import { useState, useEffect } from 'react';
+import { useAuth } from './hooks/useAuth';
 
 import { Header } from './components/Header/Header';
 import { Home } from './components/Home/Home';
@@ -20,14 +21,15 @@ import * as gamesService from "./services/gamesService";
 function App() {
     
     const [games, setGames] = useState([]);
+    const [auth, setAuth] = useAuth('auth', null);
 
     useEffect(() => {
         gamesService.getAll()
             .then(res => setGames(res));
     }, [])
-    
+
     return (
-        <AuthContext.Provider>
+        <AuthContext.Provider value={[auth, setAuth]}>
             <div id="box">
                 <Header />
                 {/* Main Content */}

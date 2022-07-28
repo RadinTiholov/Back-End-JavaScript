@@ -1,10 +1,11 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { AuthContext } from "../../contexts/AuthContext"
 import * as reqest from "../../services/requester" 
 
 export const Login = () => {
+    const [auth, setAuth] = useContext(AuthContext)
     const navigate = useNavigate();
-    const [user, setUser] = useState({});
     const [inputData, setInputData] = useState({
         email : "",
         password: ""
@@ -19,8 +20,8 @@ export const Login = () => {
         e.preventDefault();
         reqest.post('http://localhost:3030/users/login', inputData)
             .then(res => {
+                setAuth(res);
                 navigate('/')
-                setUser(res)
             })
             .catch(() => {navigate('/404')})
     }
