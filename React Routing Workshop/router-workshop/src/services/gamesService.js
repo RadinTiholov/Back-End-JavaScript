@@ -17,9 +17,14 @@ const create = (data) => {
     return request.post(`${baseUrl}/data/games`, data)
         .catch(err => alert(err))
 }
+const update = (id, data) => {
+    return request.put(`${baseUrl}/data/games/${id}`, data)
+        .catch(err => alert(err))
+}
 export {
     getLatest,
     getDetails,
     getAll,
-    create
+    create,
+    update
 }

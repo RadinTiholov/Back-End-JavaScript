@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { GameContext } from "../../contexts/GameContext";
 import * as gamesService from '../../services/gamesService'
 
 export const Create = () => {
     const navigate = useNavigate();
+    const {addGame} = useContext(GameContext);
     const [inputData, setInputData] = useState({
         title: "",
         category: "",
@@ -20,8 +22,8 @@ export const Create = () => {
     const onSubmit = (e) => {
         e.preventDefault();
         gamesService.create(inputData)
-            .then(() => {
-
+            .then(res => {
+                addGame(res);
                 navigate('/catalogue')
             })
             .catch(err => {
