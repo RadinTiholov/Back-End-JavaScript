@@ -21,10 +21,15 @@ const update = (id, data) => {
     return request.put(`${baseUrl}/data/games/${id}`, data)
         .catch(err => alert(err))
 }
+const delGame = (id) => {
+    return request.del(`${baseUrl}/data/games/${id}`)
+        .catch(err => alert(err))
+}
 export {
     getLatest,
     getDetails,
     getAll,
     create,
-    update
+    update,
+    delGame
 }
