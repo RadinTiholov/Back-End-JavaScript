@@ -4,7 +4,7 @@ import { AuthContext } from "../../contexts/AuthContext"
 import * as request from "../../services/requester" 
 
 export const Login = () => {
-    const [auth, userLogin, userLogout] = useContext(AuthContext)
+    const {userLogin} = useContext(AuthContext)
     const navigate = useNavigate();
     const [inputData, setInputData] = useState({
         email : "",

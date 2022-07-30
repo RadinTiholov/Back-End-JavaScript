@@ -5,7 +5,7 @@ import {
 import { AuthContext } from "../../contexts/AuthContext";
 
 export const Header = () => {
-    const [auth, userLogin, userLogout] = useContext(AuthContext);
+    const {auth} = useContext(AuthContext);
     return (
         <header>
             {/* Navigation */}

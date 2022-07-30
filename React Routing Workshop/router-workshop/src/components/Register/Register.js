@@ -5,7 +5,7 @@ import * as request from "../../services/requester"
 
 export const Register = () => {
     const navigate = useNavigate();
-    const [auth, userLogin, userLogout] = useContext(AuthContext);
+    const {userLogin} = useContext(AuthContext);
     const [inputData, setInputData] = useState({
         email : "",
         password: "",

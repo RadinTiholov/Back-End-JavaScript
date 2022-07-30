@@ -3,7 +3,7 @@ import {
     Routes,
     Route
 } from "react-router-dom";
-import { AuthContext } from './contexts/AuthContext';
+import { AuthContext, AuthProvider } from './contexts/AuthContext';
 import { useState, useEffect } from 'react';
 import { useAuth } from './hooks/useAuth';
 
@@ -22,23 +22,16 @@ import { Logout } from './components/Logout/Logout';
 function App() {
     
     const [games, setGames] = useState([]);
-    const [auth, setAuth] = useAuth('auth', null);
 
     useEffect(() => {
         gamesService.getAll()
             .then(res => setGames(res));
     }, [])
 
-    const userLogin = (authData) => {
-        setAuth(authData);
-    };
-
-    const userLogout = () => {
-        setAuth(null);
-    };
+    
 
     return (
-        <AuthContext.Provider value={[auth, userLogin, userLogout]}>
+        <AuthProvider>
             <div id="box">
                 <Header />
                 {/* Main Content */}
@@ -55,7 +48,7 @@ function App() {
                     <Route path='*' element={<NotFound />} />
                 </Routes>
             </div>
-        </AuthContext.Provider>
+        </AuthProvider>
     );
 }
 
