@@ -16,6 +16,8 @@ import { Catalogue } from './components/Catalogue/Catalogue';
 import { NotFound } from './components/NotFound/NotFound';
 import { Logout } from './components/Logout/Logout';
 import { GameProvider } from './contexts/GameContext';
+import GuestGuard from './components/common/GuestGuard';
+import UserGuard from './components/common/UserGuard';
 
 function App() {
     return (
@@ -27,13 +29,17 @@ function App() {
                 <GameProvider>
                     <Routes>
                         <Route index element={<Home />} />
-                        <Route path='/login' element={<Login />} />
-                        <Route path='/logout' element={<Logout />} />
-                        <Route path='/register' element={<Register />} />
-                        <Route path='/create' element={<Create />} />
-                        <Route path='/edit/:id' element={<Edit />} />
-                        <Route path='/details/:id' element={<Details/>} />
-                        <Route path='/catalogue' element={<Catalogue/>} />
+                        <Route path='/details/:id' element={<Details />} />
+                        <Route path='/catalogue' element={<Catalogue />} />
+                        <Route element={<GuestGuard />}>
+                            <Route path='/logout' element={<Logout />} />
+                            <Route path='/create' element={<Create />} />
+                            <Route path='/edit/:id' element={<Edit />} />
+                        </Route>
+                        <Route element={<UserGuard />}>
+                            <Route path='/login' element={<Login />} />
+                            <Route path='/register' element={<Register />} />
+                        </Route>
                         <Route path='*' element={<NotFound />} />
                     </Routes>
                 </GameProvider>
