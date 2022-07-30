@@ -13,8 +13,13 @@ const getAll = () => {
     return request.get(`${baseUrl}/data/games`)
         .catch(err => alert(err))
 }
+const create = (data) => {
+    return request.post(`${baseUrl}/data/games`, data)
+        .catch(err => alert(err))
+}
 export {
     getLatest,
     getDetails,
-    getAll
+    getAll,
+    create
 }
